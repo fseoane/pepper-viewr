@@ -1,0 +1,171 @@
+[options]
+girs_directories = ["../gir-files", "../"]
+library = "SpiceClientGLib"
+version = "2.0"
+min_cfg_version = "1.0.0"
+target_path = "."
+work_mode = "normal"
+generate_safety_asserts = true
+deprecate_by_min_version = true
+single_version_file = true
+
+manual = [
+    "GLib.ByteArray",
+    "GLib.Error",
+    "GLib.MainContext",
+    "GLib.OptionGroup",
+    "Gio.AsyncReadyCallback",
+    "Gio.AsyncResult",
+    "Gio.Cancellable",
+    "Gio.File",
+    "Gio.FileCopyFlags",
+    "Gio.FileProgressCallback",
+    "Gio.Socket",
+    "GObject.Object",
+    "SpiceClientGLib.DisplayMonitorConfig",
+    "SpiceClientGLib.DisplayPrimary",
+    # "SpiceClientGLib.MsgIn",
+    # "SpiceClientGLib.MsgOut",
+]
+
+generate = [
+    "SpiceClientGLib.Audio",
+    "SpiceClientGLib.ChannelEvent",
+    "SpiceClientGLib.ClientError",
+    "SpiceClientGLib.CursorShape",
+    "SpiceClientGLib.FileTransferTask",
+    "SpiceClientGLib.GlScanout",
+    "SpiceClientGLib.InputsLock",
+    "SpiceClientGLib.QmpStatus",
+    "SpiceClientGLib.QmpPortVmAction",
+    "SpiceClientGLib.SessionMigration",
+    "SpiceClientGLib.SessionVerify",
+    "SpiceClientGLib.SmartcardManager",
+    "SpiceClientGLib.URI",
+]
+
+[[object]]
+name = "SpiceClientGLib.*"
+status = "generate"
+    [[object.function]]
+    name = "util_get_debug"
+    rename = "debug"
+    [[object.function]]
+    name = "util_set_debug"
+    rename = "set_debug"
+    [[object.function]]
+    name = "util_get_version_string"
+    rename = "version"
+    [[object.function]]
+    name = "get_option_group"
+    rename = "option_group"
+    ignore = true # not yet in glib-rs
+
+[[object]]
+name = "SpiceClientGLib.Channel"
+final_type = false
+status = "generate"
+
+[[object]]
+name = "SpiceClientGLib.CursorChannel"
+final_type = true
+status = "generate"
+
+[[object]]
+name = "SpiceClientGLib.DisplayChannel"
+final_type = true
+status = "generate"
+    [[object.signal]]
+    name = "display-primary-create"
+    manual = true
+    [[object.function]]
+    name = "display_channel_get_primary"
+    rename = "get_primary"
+        [object.function.return]
+        bool_return_is_error = "No primary surface"
+    [[object.function]]
+    name = "display_channel_change_preferred_compression"
+    rename = "change_preferred_compression"
+    [[object.function]]
+    name = "display_channel_change_preferred_video_codec_types"
+    rename = "change_preferred_video_codec_types"
+    [[object.property]]
+    name = "monitors"
+    generate = ["notify"]
+
+[[object]]
+name = "SpiceClientGLib.InputsChannel"
+final_type = true
+status = "generate"
+
+[[object]]
+name = "SpiceClientGLib.MainChannel"
+final_type = true
+status = "generate"
+    [[object.signal]]
+    name = "main-clipboard-selection"
+    manual = true
+    [[object.signal]]
+    name = "main-clipboard-selection-grab"
+    manual = true
+
+[[object]]
+name = "SpiceClientGLib.PlaybackChannel"
+final_type = true
+status = "generate"
+
+[[object]]
+name = "SpiceClientGLib.PortChannel"
+final_type = false
+status = "generate"
+    [[object.function]]
+    name = "write_async"
+    manual = true # need 'static  for data
+
+[[object]]
+name = "SpiceClientGLib.QmpPort"
+final_type = true
+status = "generate"
+
+[[object]]
+name = "SpiceClientGLib.RecordChannel"
+final_type = true
+status = "generate"
+
+[[object]]
+name = "SpiceClientGLib.Session"
+final_type = true
+status = "generate"
+
+[[object]]
+name = "SpiceClientGLib.SmartcardChannel"
+final_type = true
+status = "generate"
+
+[[object]]
+name = "SpiceClientGLib.UsbDevice"
+final_type = true
+status = "generate"
+    [[object.function]]
+    name = "get_libusb_device"
+    manual = true
+
+[[object]]
+name = "SpiceClientGLib.UsbDeviceManager"
+final_type = true
+status = "generate"
+    [[object.function]]
+    pattern = ".+"
+        [[object.function.parameter]]
+        name = "device"
+        const = true
+
+[[object]]
+name = "SpiceClientGLib.UsbredirChannel"
+final_type = true
+status = "generate"
+
+[[object]]
+name = "SpiceClientGLib.WebdavChannel"
+final_type = true
+status = "generate"

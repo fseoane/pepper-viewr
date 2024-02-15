@@ -1,0 +1,7 @@
+[workspace]
+members = [
+     "spice-client-glib",
+     "spice-client-glib/sys",
+]
+
+exclude = ["gir"]

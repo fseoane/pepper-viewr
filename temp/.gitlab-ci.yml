@@ -1,0 +1,35 @@
+image: 'registry.fedoraproject.org/fedora:33'
+
+before_script:
+  - dnf update -y
+  - dnf install -y git gtk-vnc2-devel gcc
+  - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly
+  - source $HOME/.cargo/env
+  - git submodule update --init
+
+stages:
+  - test
+  - deploy
+
+build:
+  stage: test
+  script:
+    - cargo build --all-features
+    - cargo test --all-features
+
+pages:
+  stage: deploy
+  script:
+    - cp ./GVnc-1.0.gir ./gir-files
+    - cargo build --release --manifest-path ./gir/Cargo.toml
+    - ./target/release/gir -c ./gvnc/Gir.toml -d ./gir-files --doc-target-path docs.md -m doc
+    - cargo install rustdoc-stripper
+    - /root/.cargo/bin/rustdoc-stripper -g -o ./gvnc/docs.md
+    - cargo doc -p gvnc -p gvnc-sys --all-features --no-deps
+    - mv target/doc/ public
+  artifacts:
+    paths:
+      - public
+  only:
+    refs:
+      - master
